@@ -67,14 +67,16 @@ end
 
 function scannOres(predictTable, quart)
   local foundsTable = {}
+  local i = 1
 
   for x=quart.pi,quart.ki do
-    foundsTable[x]={}
     for y=quart.pj,quart.kj do
-      foundsTable[x][y]={}
       for z=1,64 do
         if predictTable[x][y][z] > 2.5 then
-          foundsTable[x][y][z-32] = true
+          foundsTable[i].x = x
+          foundsTable[i].y = y
+          foundsTable[i].z = z
+          foundsTable[i].hardness = predictTable[x][y][z]
         end
       end
     end
