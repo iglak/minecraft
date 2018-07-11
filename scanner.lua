@@ -48,20 +48,21 @@ end
 
 function scannPredict(count, quart)
 
-  local prdictTable = {}
+  local predictTable = {}
   
   for i=quart.pi,quart.ki do
-    prdictTable[i]={}
+    predictTable[i]={}
     os.execute("postep "..(i-quart.pi).." 32")
     for j=quart.pj,quart.kj do
-      prdictTable[i][j]=component.geolyzer.scan(i,j)
+      predictTable[i][j]=component.geolyzer.scan(i,j)
       for c=1,count do
-        prdictTable[i][j]=add(prdictTable[i][j],component.geolyzer.scan(i,j))
+        predictTable[i][j]=add(predictTable[i][j],component.geolyzer.scan(i,j))
       end
-      prdictTable[i][j]=div(prdictTable[i][j],count)
+      predictTable[i][j]=div(predictTable[i][j],count)
     end
   end
 
+  return predictTable
 end
 
 function scannOres(predictTable, quart)
@@ -72,8 +73,6 @@ function scannOres(predictTable, quart)
     for y=quart.pj,quart.kj do
       foundsTable[x][y]={}
       for z=1,64 do
-        print("Debug Scann z,y,z",z,y,z)
-        print("Debug 1,1,1", predictTable[1][1][1])
         if predictTable[x][y][z] > 2.5 then
           foundsTable[x][y][z-32] = true
         end
