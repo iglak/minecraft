@@ -23,18 +23,34 @@ function div(a , d)
   return a
 end
 
-function scannPredict(count)
-  
+function quarters(quarter)
+  local quarters = {} 
 
-  local prdictTable = {}
-
-  for i=-32,32 do
-    prdictTable[i]={}
+  if quarter == 1 then
+    quarters.pi,quarters.ki = 0,32
+    quarters.pj,quarters.kj = 0,32
+  else if quarter == 2 then
+    quarters.pi,quarters.ki = -32,-1
+    quarters.pj,quarters.kj = 0,32
+  else if quarter == 3 then
+    quarters.pi,quarters.ki = -32,-1
+    quarters.pj,quarters.kj = -32,-1
+  else if quarter == 4 then
+    quarters.pi,quarters.ki = 0,32
+    quarters.pj,quarters.kj = -32,-1
   end
 
-  for i=-32,32 do
+  return quarters
+end
+
+function scannPredict(count, quart)
+
+  local prdictTable = {}
+  
+  for i=quart.pi,quart.ki do
+    prdictTable[i]={}
     os.execute("postep "..(i+32).." 64")
-    for j=-32,-32 do
+    for j=quart.pj,quart.kj do
       prdictTable[i][j]=component.geolyzer.scan(i,j)
       for c=1,count do
         prdictTable[i][j]=add(prdictTable[i][j],component.geolyzer.scan(i,j))
@@ -45,12 +61,12 @@ function scannPredict(count)
 
 end
 
-function scannOres(predictTable)
+function scannOres(predictTable, quart)
   local foundsTable = {}
 
-  for x=-32,32 do
+  for x=quart.pi,quart.ki do
     foundsTable[x]={}
-    for y=-32,32 do
+    for y=quart.pj,quart.kj do
       foundsTable[x][y]={}
       for z=1,64 do
         if predictTable[x][y][z] > 2.5 then
@@ -63,7 +79,10 @@ function scannOres(predictTable)
   return foundsTable
 end
 
+
+local quart = quarters(1)
+
 local file = io.open(args[1],"w")
-local foundsTable = scannOres(scannPredict(args[2]))
+local foundsTable = scannOres(scannPredict(args[2],quart),quart)
 file:write(serial.serialize(foundsTable))
 file:close()
