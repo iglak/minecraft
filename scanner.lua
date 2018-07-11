@@ -52,9 +52,9 @@ function scannOres(predictTable)
     foundsTable[x]={}
     for y=-32,32 do
       foundsTable[x][y]={}
-      for z=-32,32 do
+      for z=1,64 do
         if predictTable[x][y][z] > 2.5 then
-          foundsTable[x][y][z] = true
+          foundsTable[x][y][z-32] = true
         end
       end
     end
