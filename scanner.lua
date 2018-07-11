@@ -58,7 +58,7 @@ function scannPredict(count, quart)
       for c=1,count do
         predictTable[i][j]=add(predictTable[i][j],component.geolyzer.scan(i,j))
       end
-      predictTable[i][j]=div(predictTable[i][j],count)
+      predictTable[i][j]=div(predictTable[i][j],count+1)
     end
   end
 
@@ -73,10 +73,12 @@ function scannOres(predictTable, quart)
     for y=quart.pj,quart.kj do
       for z=1,64 do
         if predictTable[x][y][z] > 2.5 then
+          foundsTable[i]={}
           foundsTable[i].x = x
           foundsTable[i].y = y
-          foundsTable[i].z = z
+          foundsTable[i].z = z-32
           foundsTable[i].hardness = predictTable[x][y][z]
+          i=i+1
         end
       end
     end
