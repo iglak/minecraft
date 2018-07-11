@@ -52,7 +52,7 @@ function scannPredict(count, quart)
   
   for i=quart.pi,quart.ki do
     prdictTable[i]={}
-    os.execute("postep "..(i+32).." 64")
+    os.execute("postep "..(i-quart.pi).." 32")
     for j=quart.pj,quart.kj do
       prdictTable[i][j]=component.geolyzer.scan(i,j)
       for c=1,count do
@@ -72,6 +72,8 @@ function scannOres(predictTable, quart)
     for y=quart.pj,quart.kj do
       foundsTable[x][y]={}
       for z=1,64 do
+        print("Debug Scann z,y,z",z,y,z)
+        print("Debug 1,1,1", predictTable[1][1][1])
         if predictTable[x][y][z] > 2.5 then
           foundsTable[x][y][z-32] = true
         end
