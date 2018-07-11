@@ -39,6 +39,9 @@ function quarters(quarter)
     quarters.pi,quarters.ki = 0,32
     quarters.pj,quarters.kj = -32,-1
   end
+  end
+  end
+  end
 
   return quarters
 end
