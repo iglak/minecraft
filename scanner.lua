@@ -47,7 +47,7 @@ function quarters(quarter)
   return quarters
 end
 
-function scannPredict(count, quart)
+function scannPredict(quart)
 
   local predictTable = {}
   
@@ -56,10 +56,11 @@ function scannPredict(count, quart)
     os.execute("postep "..(i-quart.pi).." 32")
     for j=quart.pj,quart.kj do
       predictTable[i][j]=component.geolyzer.scan(i,j)
-      for c=1,count do
+      local count = abs(i)+abs(j)
+      for c=0,count do
         predictTable[i][j]=add(predictTable[i][j],component.geolyzer.scan(i,j))
       end
-      predictTable[i][j]=div(predictTable[i][j],count+1)
+      predictTable[i][j]=div(predictTable[i][j],count+2)
     end
   end
 
@@ -92,6 +93,6 @@ end
 local quart = quarters(1)
 
 local file = io.open(args[1],"w")
-local foundsTable = scannOres(scannPredict(args[2],quart),quart)
+local foundsTable = scannOres(scannPredict(quart),quart)
 file:write(serial.serialize(foundsTable))
 file:close()
