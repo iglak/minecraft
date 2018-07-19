@@ -56,7 +56,7 @@ function scannPredict(quart)
     os.execute("postep "..(i-quart.pi).." 32")
     for j=quart.pj,quart.kj do
       predictTable[i][j]=component.geolyzer.scan(i,j)
-      local count = abs(i)+abs(j)
+      local count = math.abs(i)+math.abs(j)
       for c=0,count do
         predictTable[i][j]=add(predictTable[i][j],component.geolyzer.scan(i,j))
       end
