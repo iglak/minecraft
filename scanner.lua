@@ -3,6 +3,9 @@ local args,ops = shell.parse(...)
 local component = require("component")
 local serial = require("serialization")
 
+local foundsTable = {}
+local fi = 1
+
 function add(a, b)
   local c = {}
 
@@ -56,7 +59,7 @@ function scannPredict(quart)
     os.execute("postep "..(i-quart.pi).." 32")
     for j=quart.pj,quart.kj do
       predictTable[i][j]=component.geolyzer.scan(i,j)
-      local count = math.abs(i)+math.abs(j)
+      local count = math.floor((math.abs(i)+math.abs(j))/2)
       for c=0,count do
         predictTable[i][j]=add(predictTable[i][j],component.geolyzer.scan(i,j))
       end
@@ -68,19 +71,18 @@ function scannPredict(quart)
 end
 
 function scannOres(predictTable, quart)
-  local foundsTable = {}
-  local i = 1
+  
 
   for x=quart.pi,quart.ki do
     for y=quart.pj,quart.kj do
       for z=1,64 do
         if predictTable[x][y][z] > 2.5 then
-          foundsTable[i]={}
-          foundsTable[i].x = x
-          foundsTable[i].y = y
-          foundsTable[i].z = z-32
-          foundsTable[i].hardness = predictTable[x][y][z]
-          i=i+1
+          foundsTable[fi]={}
+          foundsTable[fi].x = x
+          foundsTable[fi].y = y
+          foundsTable[fi].z = z-32
+          foundsTable[fi].hardness = predictTable[x][y][z]
+          fi=fi+1
         end
       end
     end
@@ -90,9 +92,19 @@ function scannOres(predictTable, quart)
 end
 
 
+
 local quart = quarters(1)
+scannOres(scannPredict(quart),quart)
+print(1)
+quart = quarters(2)
+scannOres(scannPredict(quart),quart)
+print(2)
+quart = quarters(3)
+scannOres(scannPredict(quart),quart)
+print(3)
+quart = quarters(4)
+scannOres(scannPredict(quart),quart)
 
 local file = io.open(args[1],"w")
-local foundsTable = scannOres(scannPredict(quart),quart)
 file:write(serial.serialize(foundsTable))
 file:close()
