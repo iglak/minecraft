@@ -2,6 +2,9 @@ local shell = require("shell")
 local args,ops = shell.parse(...)
 local component = require("component")
 local serial = require("serialization")
+local computer = require("computer")
+
+local startTime = computer.uptime()
 
 local foundsTable = {}
 local fi = 1
@@ -108,3 +111,5 @@ scannOres(scannPredict(quart),quart)
 local file = io.open(args[1],"w")
 file:write(serial.serialize(foundsTable))
 file:close()
+
+print(computer.uptime()-startTime) 
