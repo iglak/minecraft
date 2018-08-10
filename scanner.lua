@@ -67,49 +67,30 @@ function scannPredict(quart)
         predictTable[i][j]=add(predictTable[i][j],component.geolyzer.scan(i,j))
       end
       predictTable[i][j]=div(predictTable[i][j],count+2)
-    end
-  end
-
-  return predictTable
-end
-
-function scannOres(predictTable, quart)
-  
-
-  for x=quart.pi,quart.ki do
-    for y=quart.pj,quart.kj do
       for z=1,64 do
-        if predictTable[x][y][z] > 2.5 then
-          foundsTable[fi]={}
-          foundsTable[fi].x = x
-          foundsTable[fi].y = y
-          foundsTable[fi].z = z-32
-          foundsTable[fi].hardness = predictTable[x][y][z]
-          fi=fi+1
+        if predictTable[i][j][z] > 2.5 then
+          found.x = x
+          found.y = y
+          found.z = z-32
+          found.hardness = predictTable[i][j][z]
+          component.modem.broadcast(101, serial.serialize(found))
         end
       end
     end
   end
 
-  return foundsTable
 end
 
-
-
 local quart = quarters(1)
-scannOres(scannPredict(quart),quart)
+scannPredict(quart)
 print(1)
 quart = quarters(2)
-scannOres(scannPredict(quart),quart)
+scannPredict(quart)
 print(2)
 quart = quarters(3)
-scannOres(scannPredict(quart),quart)
+scannPredict(quart)
 print(3)
 quart = quarters(4)
-scannOres(scannPredict(quart),quart)
-
-local file = io.open(args[1],"w")
-file:write(serial.serialize(foundsTable))
-file:close()
+scannPredict(quart)
 
 print(computer.uptime()-startTime) 
