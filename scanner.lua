@@ -64,15 +64,15 @@ function scannPredict(quart)
     os.execute("postep "..(i-quart.pi).." 32")
     for j=quart.pj,quart.kj do
       predictTable[i][j]=component.geolyzer.scan(i,j)
-      local count = math.floor((math.abs(i)+math.abs(j))/2)
+      local count = math.floor((math.abs(i)+math.abs(j))/8)
       for c=0,count do
         predictTable[i][j]=add(predictTable[i][j],component.geolyzer.scan(i,j))
       end
       predictTable[i][j]=div(predictTable[i][j],count+2)
       for z=1,64 do
         if predictTable[i][j][z] > 2.5 then
-          found.x = x
-          found.y = y
+          found.x = i
+          found.y = j
           found.z = z-32
           found.hardness = predictTable[i][j][z]
           component.modem.broadcast(101, serial.serialize(found))
