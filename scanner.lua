@@ -85,7 +85,7 @@ end
 local quart = quarters(1)
 scannPredict(quart)
 print(1)
-quart = quarters(2)
+quart = quarters(2)e
 scannPredict(quart)
 print(2)
 quart = quarters(3)
