@@ -57,6 +57,7 @@ end
 function scannPredict(quart)
 
   local predictTable = {}
+  local found={}
   
   for i=quart.pi,quart.ki do
     predictTable[i]={}
@@ -85,7 +86,7 @@ end
 local quart = quarters(1)
 scannPredict(quart)
 print(1)
-quart = quarters(2)e
+quart = quarters(2)
 scannPredict(quart)
 print(2)
 quart = quarters(3)
